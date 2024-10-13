@@ -8239,8 +8239,19 @@ if (! formula && typeof(require) === 'function') {
                 // Double click over header
                 if (jexcelTable[1] == 1 && jexcel.current.options.columnSorting == true) {
                     // Check valid column header coords
-                    var columnId = e.target.getAttribute('data-x');
-                    if (columnId) {
+                    var getHeader = function(element) {
+                        if (element) {
+                            var x = element.getAttribute('data-x');
+                            if (x) {
+                                return element;
+                            } else {
+                                return getHeader(element.parentNode);
+                            }
+                        }
+                    }
+                    const headerCell = getHeader(e.target);
+                    if (headerCell) {
+                        var columnId = headerCell.getAttribute('data-x');
                         jexcel.current.orderBy(columnId);
                     }
                 }
